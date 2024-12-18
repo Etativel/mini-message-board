@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const router = express();
 const controller = require("../controllers/inputMessageController");
 router.use(express.urlencoded({ extended: true }));
@@ -12,5 +11,8 @@ router.get("/new", controller.getForm);
 
 // Post new message
 router.post("/new", controller.postMessage);
+
+// Get Message
+router.get("/message/:users", controller.getMessage);
 
 module.exports = router;

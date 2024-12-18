@@ -1,4 +1,4 @@
-const messages = require("../models/message");
+const messages = require("../models/messageData");
 
 module.exports = {
   getForm: (req, res) => {
@@ -6,6 +6,14 @@ module.exports = {
   },
   getHomepage: (req, res) => {
     res.render("home.ejs", { title: "Mini Messageboard", messages: messages });
+  },
+  getMessage: (req, res) => {
+    const userId = req.params.users;
+    const userMessage = messages.filter(
+      (message) => message.user === userId
+    )[0];
+    // console.log(userMessage.text);
+    res.render("userMessage.ejs", { message: userMessage });
   },
   postMessage: (req, res) => {
     messages.push({
