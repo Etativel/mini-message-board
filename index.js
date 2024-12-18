@@ -11,8 +11,21 @@ app.use(express.static(assetPath));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+const messages = [
+  {
+    text: "Hi there!",
+    user: "Amando",
+    added: new Date(),
+  },
+  {
+    text: "Hello World!",
+    user: "Charles",
+    added: new Date(),
+  },
+];
+
 app.get("/", (req, res) => {
-  res.render("home.ejs");
+  res.render("home.ejs", { title: "Mini Messageboard", messages: messages });
 });
 
 app.use((req, res) => {
