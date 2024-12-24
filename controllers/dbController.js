@@ -1,6 +1,8 @@
 const db = require("../db/queries");
+const { main } = require("../db/populatedb");
 
 async function getAllMessagesHandler(req, res) {
+  main();
   const messages = await db.getAllMessages();
   res.render("home", { title: "Mini Messageboard", messages: messages });
 }
