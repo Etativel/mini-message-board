@@ -1,10 +1,20 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
 require("dotenv").config();
+
+const pool = new Pool({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 const SQL = `
 CREATE TABLE IF NOT EXISTS messages (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  username VARCHAR ( 255 ),
+  id SERIAL PRIMARY KEY,
+  username VARCHAR (255),
   message_content VARCHAR (255),
   send_at DATE DEFAULT CURRENT_DATE
 );
@@ -17,18 +27,18 @@ VALUES
 
 async function main() {
   console.log("seeding...");
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-  });
+  const client = await pool.connect(); // Get a client from the pool
 
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("done");
+  try {
+    await client.query(SQL);
+    console.log("done");
+  } catch (err) {
+    console.error("Error during seeding:", err);
+  } finally {
+    client.release(); // Release the client back to the pool
+  }
 }
 
 main();
 
-module.exports = {
-  main,
-};
+module.exports = pool;
