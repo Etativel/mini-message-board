@@ -1,5 +1,4 @@
 const db = require("../db/queries");
-const { main } = require("../db/populatedb");
 
 async function getAllMessagesHandler(req, res) {
   const messages = await db.getAllMessages();
