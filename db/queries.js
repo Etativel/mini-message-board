@@ -25,8 +25,18 @@ async function insertUser(params) {
   );
 }
 
+async function deleteUser(id) {
+  await pool.query(
+    `
+        DELETE FROM messages WHERE id = ($1)
+        `,
+    [id]
+  );
+}
+
 module.exports = {
   getAllMessages,
   getUser,
   insertUser,
+  deleteUser,
 };

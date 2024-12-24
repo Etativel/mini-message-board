@@ -22,8 +22,15 @@ async function insertUserHandler(req, res) {
   res.redirect("/");
 }
 
+async function deleteUserHandler(req, res) {
+  const { id } = req.params;
+  await db.deleteUser(id);
+  res.redirect("/");
+}
+
 module.exports = {
   getAllMessagesHandler,
   getUserHandler,
   insertUserHandler,
+  deleteUserHandler,
 };
